@@ -120,6 +120,32 @@ body.hide_completed .completed {
   display: none !important;
 }
 
+/* Highlight item categories with thematic colors */
+.f_miss {
+  color: #FF4500; /* OrangeRed - missable content warning */
+}
+.f_boss {
+  color: #8B008B; /* DarkMagenta - epic boss encounters */
+}
+.f_npc {
+  color: #0066CC; /* Royal Blue - characters and dialogues */
+}
+.f_estus {
+  color: #FF8C00; /* DarkOrange - like the Estus Flask glow */
+}
+.f_bone {
+  color: #8B7355; /* Brown - Undead Bone Shards */
+}
+.f_tome, .f_coal, .f_ash, .f_sorc, .f_pyro, .f_mirac {
+  color: #9932CC; /* DarkOrchid - magical items and upgrade materials */
+}
+.f_gest {
+  color: #00CED1; /* DarkTurquoise - gestures and social interactions */
+}
+.f_ring {
+  color: #DAA520; /* Goldenrod - valuable ring items */
+}
+
 input[type="checkbox"]:checked + .item_content {
   text-decoration: line-through;
 }
