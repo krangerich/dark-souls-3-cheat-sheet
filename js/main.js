@@ -52,6 +52,18 @@ var profilesKey = 'darksouls3_profiles';
             } else {
               $('[data-id="'+id+'"] label').removeClass('completed');
             }
+
+            // Synchronize linked items (e.g., gestures in walkthrough and checklist)
+            var linkId = $('[data-id="' + id + '"]').attr('data-link-id');
+            if (linkId) {
+                $('[data-link-id="' + linkId + '"]').not('[data-id="' + id + '"]').each(function() {
+                    var linkedDataId = $(this).attr('data-id');
+                    profiles[profilesKey][profiles.current].checklistData[linkedDataId] = isChecked;
+                    $('#' + linkedDataId).prop('checked', isChecked)
+                        .closest('label').toggleClass('completed', isChecked);
+                });
+            }
+
             $.jStorage.set(profilesKey, profiles);
             calculateTotals();
         });
