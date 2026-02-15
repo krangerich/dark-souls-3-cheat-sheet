@@ -121,9 +121,6 @@ body.hide_completed .completed {
 }
 
 /* Highlight item categories with thematic colors */
-.f_miss {
-  color: #FF4500; /* OrangeRed - missable content warning */
-}
 .f_boss {
   color: #8B008B; /* DarkMagenta - epic boss encounters */
 }
