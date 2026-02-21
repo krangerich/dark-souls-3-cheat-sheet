@@ -53,15 +53,36 @@ var profilesKey = 'darksouls3_profiles';
               $('[data-id="'+id+'"] label').removeClass('completed');
             }
 
-            // Synchronize linked items (e.g., gestures in walkthrough and checklist)
-            var linkId = $('[data-id="' + id + '"]').attr('data-link-id');
-            if (linkId) {
-                $('[data-link-id="' + linkId + '"]').not('[data-id="' + id + '"]').each(function() {
-                    var linkedDataId = $(this).attr('data-id');
-                    profiles[profilesKey][profiles.current].checklistData[linkedDataId] = isChecked;
-                    $('#' + linkedDataId).prop('checked', isChecked)
-                        .closest('label').toggleClass('completed', isChecked);
-                });
+            // Synchronize linked items transitively (BFS over the link-id graph)
+            var linkIdAttr = $('[data-id="' + id + '"]').attr('data-link-id');
+            if (linkIdAttr) {
+                var visitedDataIds = {};
+                visitedDataIds[id] = true;
+                var visitedLinkIds = {};
+                var linkIdQueue = linkIdAttr.split(' ');
+
+                while (linkIdQueue.length > 0) {
+                    var linkId = linkIdQueue.shift();
+                    if (visitedLinkIds[linkId]) continue;
+                    visitedLinkIds[linkId] = true;
+
+                    $('[data-link-id~="' + linkId + '"]').each(function() {
+                        var linkedDataId = $(this).attr('data-id');
+                        if (visitedDataIds[linkedDataId]) return;
+                        visitedDataIds[linkedDataId] = true;
+
+                        profiles[profilesKey][profiles.current].checklistData[linkedDataId] = isChecked;
+                        $('#' + linkedDataId).prop('checked', isChecked)
+                            .closest('label').toggleClass('completed', isChecked);
+
+                        var linkedLinkIdAttr = $(this).attr('data-link-id');
+                        if (linkedLinkIdAttr) {
+                            $.each(linkedLinkIdAttr.split(' '), function(_, linkedLinkId) {
+                                if (!visitedLinkIds[linkedLinkId]) linkIdQueue.push(linkedLinkId);
+                            });
+                        }
+                    });
+                }
             }
 
             $.jStorage.set(profilesKey, profiles);
