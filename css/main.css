@@ -141,6 +141,31 @@ body.hide_completed .completed {
   display: none !important;
 }
 
+/* Questline selector (Sirris / Rosaria) */
+#choice_sirris,
+#choice_rosaria {
+  display: none;
+}
+.questline-info {
+  display: none;
+  margin-bottom: 1em;
+}
+#choice_sirris:checked ~ #questline_heading label[for="choice_sirris"],
+#choice_rosaria:checked ~ #questline_heading label[for="choice_rosaria"] {
+  background-image: none;
+  box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+  background-color: #e6e6e6;
+  border-color: #adadad;
+}
+#choice_sirris:checked ~ .questline-info-sirris,
+#choice_rosaria:checked ~ .questline-info-rosaria {
+  display: block;
+}
+#choice_sirris:checked ~ #playthrough_list li[data-path="rosaria"],
+#choice_rosaria:checked ~ #playthrough_list li[data-path="sirris"] {
+  display: none;
+}
+
 /* Highlight item categories with thematic colors */
 .f_boss {
   color: #8b008b; /* DarkMagenta - epic boss encounters */

@@ -280,6 +280,11 @@ var profilesKey = 'darksouls3_profiles';
             else {var c = Math.round((a+b)/2); $('html, body').scrollTop(oldPos+Math.round(labels.eq(c).offset().top)-Math.round(oldOff[c]));}
         });
 
+        $('input[name="questline"]').change(function() {
+            profiles[profilesKey][profiles.current].questline = $(this).attr('id').replace('choice_', '');
+            $.jStorage.set(profilesKey, profiles);
+        });
+
         $('[data-ng-toggle]').change(function() {
             var journey = $(this).data('ng-toggle');
 
@@ -340,6 +345,8 @@ var profilesKey = 'darksouls3_profiles';
             profiles[profilesKey][profile_name].hide_completed = false;
         if (!('journey' in profiles[profilesKey][profile_name]))
             profiles[profilesKey][profile_name].journey = 1;
+        if (!('questline' in profiles[profilesKey][profile_name]))
+            profiles[profilesKey][profile_name].questline = 'sirris';
         if (!('hidden_categories' in profiles[profilesKey][profile_name]))
             profiles[profilesKey][profile_name].hidden_categories = {
                 f_boss: false,
@@ -386,6 +393,9 @@ var profilesKey = 'darksouls3_profiles';
         }
 
         $('[data-ng-toggle="' + profiles[profilesKey][profile_name].journey + '"]').click().change();
+
+        $('#choice_' + profiles[profilesKey][profile_name].questline).prop('checked', true);
+
         $.each(profiles[profilesKey][profile_name].hidden_categories, function(key, value) {
             var $el = $('[data-item-toggle="' + key + '"]');
             var active = $el.is(':checked');
